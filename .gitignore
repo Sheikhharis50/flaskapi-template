@@ -1,0 +1,10 @@
+# development
+venv
+.vscode
+__pycache__
+
+# local
+.DS_Store
+
+# environment
+.env
