@@ -1,6 +1,6 @@
 # FlaskAPI Template
 
-> by sheikhharis50
+> by [Sheikh Haris Zahid](https://github.com/Sheikhharis50)
 
 It helps to reduce the development time and code. MVC architecture and basic functionality is implemented in this template to give your development a boost.
 
