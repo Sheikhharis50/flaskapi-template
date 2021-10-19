@@ -1,6 +1,9 @@
-from dotenv import dotenv_values
 import os
-from utils.helpers import getKeyVal
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from dotenv import dotenv_values
+from utils.helpers import get_key_val
 
 ENV = dotenv_values(".env")
 
@@ -12,14 +15,20 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Enable debug mode.
 DEBUG = True
 
-# Connect to the database
+# Database Configurations
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{}:{}@{}:{}/{}".format(
-    getKeyVal(ENV, 'DB_USER'),
-    getKeyVal(ENV, 'DB_PASSWORD'),
-    getKeyVal(ENV, 'DB_HOST'),
-    getKeyVal(ENV, 'DB_PORT'),
-    getKeyVal(ENV, 'DB_NAME'),
+    get_key_val(ENV, 'DB_USER'),
+    get_key_val(ENV, 'DB_PASSWORD'),
+    get_key_val(ENV, 'DB_HOST'),
+    get_key_val(ENV, 'DB_PORT'),
+    get_key_val(ENV, 'DB_NAME'),
 )
-
-# Turn off the Flask-SQLAlchemy event system and warning
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+engine = create_engine(SQLALCHEMY_DATABASE_URI)
+Session = scoped_session(
+    sessionmaker(
+        autocommit=False,
+        autoflush=False,
+        bind=engine
+    )
+)

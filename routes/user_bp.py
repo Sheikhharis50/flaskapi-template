@@ -1,15 +1,11 @@
 from flask import Blueprint
 
-from controllers.UserController import (
-    index, store,
-    show, update,
-    delete
-)
+from controllers import (UserController as uc)
 
 user_bp = Blueprint('user_bp', __name__)
 
-user_bp.route('/', methods=['GET'])(index)
-user_bp.route('/create', methods=['POST'])(store)
-user_bp.route('/<int:user_id>', methods=['GET'])(show)
-user_bp.route('/<int:user_id>/edit', methods=['POST'])(update)
-user_bp.route('/<int:user_id>', methods=['DELETE'])(delete)
+user_bp.route('/', methods=['GET'], strict_slashes=False)(uc.get_users)
+user_bp.route('/', methods=['POST'], strict_slashes=False)(uc.create_user)
+user_bp.route('/<int:user_id>', methods=['GET'])(uc.get_user)
+user_bp.route('/<int:user_id>', methods=['PUT'])(uc.update_user)
+user_bp.route('/<int:user_id>', methods=['DELETE'])(uc.delete_user)
