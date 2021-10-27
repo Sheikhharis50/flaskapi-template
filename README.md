@@ -60,18 +60,23 @@ It helps to reduce the development time and code. MVC architecture and basic fun
 - write your **Business Logic** here.
 - all the APIs can be implemented here.
 
-### 2) models
+### 2) forms
+
+- write your **Form Validations and API Validations** here.
+- it is an validation layer.
+
+### 3) models
 
 - model your **Database Tables** here.
 - you can write serializers here as well.
-- implement validation layer.
+- implement model's related all methods here.
 
-### 3) routes
+### 4) routes
 
 - define your **API Endpoints** here with its REST API method.
 - attach corresponding controller with it.
 
-### 4) scripts
+### 5) scripts
 
 - write your **Scripts** here.
 - initially following script is available:
@@ -79,7 +84,7 @@ It helps to reduce the development time and code. MVC architecture and basic fun
         # it runs API server.
         $ ./scripts/run_server
 
-### 5) static
+### 6) static
 
 - it contains all the **Static Files**.
 - initially following files are available:
@@ -90,12 +95,21 @@ It helps to reduce the development time and code. MVC architecture and basic fun
   - js
     - scripts.js
   
-### 6) templates
+### 7) templates
 
 - it contains all **Templates**.
 - pages which will render from you server.
 
-### 7) root files
+### 7) utils
+
+- utils are used for convenience in development which are used in our whole app, it contains following files:
+  - decorators - concept of this is like middlewares such as (token_required).
+  - helpers - which are reusable methods which are easy to debug and efficent to use.
+  - response - custom response classes such as (APIResponse)
+
+### 8) root files
 
 - app.py - where you attach configurations with flask app.
-- config.py - contains all the configurations of app.
+- config.py - contains all the configurations of flask app.
+- .env - environment file which contains environment variables to configure flask app.
+- requirements.txt - it has all the python packages requirenements and app dependencies stored in it.
