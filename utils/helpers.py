@@ -1,5 +1,4 @@
 import os
-import wtforms as forms
 
 
 def get_key_val(d: dict = {}, key: str = ''):
@@ -8,11 +7,6 @@ def get_key_val(d: dict = {}, key: str = ''):
 
 def get_env_val(key: str):
     return os.getenv(key)
-
-
-def get_form_data(form: forms):
-    feilds = form.__dict__.get('_fields')
-    return {str(f): form[f].data for f in feilds}
 
 
 def serialize_all(obj_list: list = []):

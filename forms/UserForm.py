@@ -1,16 +1,17 @@
-from enum import Flag
-from sqlalchemy.sql.elements import and_
-from sqlalchemy.sql.expression import false
-import wtforms as forms
-from models.User import User
-from config import Session
-from sqlalchemy import or_, and_
+from .BaseForm import BaseForm, forms
 
 
-class UserForm(forms.Form):
+
+class UserForm(BaseForm):
     username = forms.StringField(
         'Username', [
             forms.validators.Length(min=4, max=25),
+            forms.validators.DataRequired(),
+        ]
+    )
+    password = forms.PasswordField(
+        'Password', [
+            forms.validators.Length(min=8, max=100),
             forms.validators.DataRequired()
         ]
     )
@@ -35,15 +36,3 @@ class UserForm(forms.Form):
     )
     age = forms.IntegerField('Age')
     address = forms.TextField('address')
-
-    def validate(self, extra_validators=None, user_id: int = 0):
-        condition = or_(
-            User.username == self.username.data,
-            User.email == self.email.data
-        )
-        if user_id:
-            condition = and_(condition, User.id != user_id)
-        query = Session.query(User).filter(condition)
-        if query.count():
-            return False, 'User already exists!'
-        return super().validate(extra_validators=extra_validators), 'Saved!'
