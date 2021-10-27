@@ -1,26 +1,16 @@
 from flask import request
 from models.User import User
 from forms.UserForm import UserForm
-from utils.helpers import get_form_data, serialize_all
+from utils.helpers import serialize_all
+from utils.decorators import token_required
 from utils.response import APIResponse
 from config import Session
 
 
+@token_required()
 def get_users():
     data = serialize_all(Session.query(User).all())
     return APIResponse(data)
-
-
-def create_user():
-    f = UserForm(request.form)
-    valid, message = f.validate()
-    if valid:
-        form_data = get_form_data(f)
-        user = User(**form_data)
-        Session.add(user)
-        Session.commit()
-        return APIResponse(user.serialize())
-    return APIResponse(dict(message=message), 406)
 
 
 def get_user(user_id: int):
@@ -36,7 +26,7 @@ def update_user(user_id: int):
         f = UserForm(request.form)
         valid, message = f.validate(user_id=user_id)
         if valid:
-            form_data = get_form_data(f)
+            form_data = f.get_form_data()
             user.first_name = form_data['first_name']
             user.last_name = form_data['last_name']
             user.age = form_data['age']

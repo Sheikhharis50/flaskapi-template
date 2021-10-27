@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from config import DEBUG, Session
 
 from models.User import db
+from routes.auth_bp import auth_bp
 from routes.user_bp import user_bp
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+app.register_blueprint(auth_bp, url_prefix='/')
 app.register_blueprint(user_bp, url_prefix='/users')
 
 
