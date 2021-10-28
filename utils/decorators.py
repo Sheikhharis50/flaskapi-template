@@ -4,6 +4,7 @@ from models.User import User
 import jwt
 from functools import wraps
 from utils.response import APIResponse
+from utils.helpers import log
 
 
 def token_required(provide_user: bool = False):
@@ -14,6 +15,7 @@ def token_required(provide_user: bool = False):
             if 'token' in request.headers:
                 token = request.headers['token']
             if not token:
+                log('Token is missing!')
                 return APIResponse(
                     dict(status='missing', message='Token is missing!'),
                     401
@@ -29,12 +31,14 @@ def token_required(provide_user: bool = False):
                         .filter_by(public_id=data.get('public_id', ''))\
                         .first()
                     return f(current_user, *args, **kwargs)
-            except jwt.ExpiredSignatureError:
+            except jwt.ExpiredSignatureError as e:
+                log(str(e))
                 return APIResponse(
                     dict(status='expired', message='Token is expired!'),
                     401
                 )
-            except:
+            except Exception as e:
+                log(str(e))
                 return APIResponse(
                     dict(status='invalid', message='Token is invalid!'),
                     401
