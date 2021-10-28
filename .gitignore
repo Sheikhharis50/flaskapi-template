@@ -1,6 +1,5 @@
 # development
 venv
-.vscode
 __pycache__
 
 # local
